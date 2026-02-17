@@ -1,0 +1,76 @@
+# ═══════════════════════════════════════════════════════════════
+# BeamScan — Geant4 Monte Carlo (advanced, optional)
+# ═══════════════════════════════════════════════════════════════
+# NOT part of the default student loop. Students use Highland.
+#
+# This runs on a SELF-HOSTED RUNNER in Córdoba with Geant4
+# installed, or on your own Docker image with Geant4.
+#
+# NOTE: The official geant4/geant4 Docker Hub image has no
+# published tags — don't rely on it. Build your own or use
+# a self-hosted runner.  See docs/CI_GEANT4.md for setup.
+# ═══════════════════════════════════════════════════════════════
+
+name: "⚛️ Geant4 Simulation"
+
+on:
+  workflow_dispatch:
+    inputs:
+      request_file:
+        description: 'Request YAML (e.g. requests/full_classification.yaml)'
+        required: true
+        type: string
+      events_per_config:
+        description: 'Events per (material × momentum) — 0 = use YAML value'
+        required: false
+        default: '0'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  simulate:
+    # ── Change to ubuntu-latest + container: if using Docker ──
+    runs-on: [self-hosted, geant4]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build BeamScan (CMake)
+        run: |
+          cmake -S simulation -B build -DCMAKE_BUILD_TYPE=Release
+          cmake --build build -j$(nproc)
+
+      - name: Generate macros from request
+        run: |
+          python3 scripts/generate_macros.py "${{ inputs.request_file }}" \
+            --output-dir macros_auto \
+            --results-dir geant4_output
+
+      - name: Run Geant4 simulations
+        run: |
+          OVERRIDE=${{ inputs.events_per_config }}
+          for mac in macros_auto/*.mac; do
+            echo "═══ Running $(basename $mac) ═══"
+            ./build/beamscan -m "$mac"
+          done
+
+      - name: Run Highland comparison
+        run: |
+          pip install -r analysis/requirements.txt 2>/dev/null || true
+          STEM=$(basename "${{ inputs.request_file }}" .yaml)
+          python3 analysis/highland_calculator.py "${{ inputs.request_file }}" \
+            --output-dir "comparison/highland"
+          python3 analysis/analyze_geant4.py geant4_output/ \
+            --highland-dir comparison/highland \
+            --output-dir "comparison/geant4_vs_highland"
+
+      - name: Upload all results
+        uses: actions/upload-artifact@v4
+        with:
+          name: geant4-${{ github.run_id }}
+          path: |
+            geant4_output/
+            comparison/
+          retention-days: 60

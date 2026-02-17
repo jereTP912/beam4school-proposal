@@ -1,0 +1,26 @@
+author: "Sofía (Córdoba, Argentina)"
+description: "Prediction-only example: add a custom material by specifying X0 and density."
+
+beam:
+  particle: "e-"
+  momenta_GeV: [3.0, 6.0]
+  num_events: 10000
+
+materials:
+  - name: "PE"
+    geant4_name: "G4_POLYETHYLENE"
+    thickness_mm: 10
+
+  - name: "Custom epoxy (example values)"
+    geant4_name: "CUSTOM_EPOXY"   # label only for prediction
+    thickness_mm: 10
+    x0_cm: 30.0
+    rho: 1.20
+    category: "custom"
+
+outputs:
+  highland_prediction: true
+  classification_plot: true
+  distribution_overlay: true
+  comparison_table: true
+  geant4_simulation: false

@@ -1,0 +1,34 @@
+# 🔬 Can MCS identify archaeological materials?
+#
+# Pre-Columbian peoples in Argentina traded obsidian across
+# hundreds of kilometres. If we can fingerprint obsidian vs
+# other rocks using particle beams, this opens a new
+# non-destructive tool for archaeology.
+
+author: "Lucía (example)"
+description: "Heritage materials: obsidian vs common rocks and pigments"
+
+beam:
+  particle: "e-"
+  momenta_GeV: [3.0, 6.0]
+  num_events: 10000
+
+materials:
+  - name: "Obsidian"
+    geant4_name: "Obsidian"
+    thickness_mm: 10.0
+  - name: "Quartz"
+    geant4_name: "G4_SILICON_DIOXIDE"
+    thickness_mm: 10.0
+  - name: "Calcite"
+    geant4_name: "G4_CALCIUM_CARBONATE"
+    thickness_mm: 10.0
+  - name: "Iron_pigment"
+    geant4_name: "G4_FERRIC_OXIDE"
+    thickness_mm: 10.0
+
+outputs:
+  highland_prediction: true
+  classification_plot: true
+  distribution_overlay: true
+  comparison_table: true

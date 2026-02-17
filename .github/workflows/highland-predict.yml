@@ -1,0 +1,161 @@
+# ═══════════════════════════════════════════════════════════════
+# BeamScan — Highland Predictions (student mode)
+# ═══════════════════════════════════════════════════════════════
+# Runs automatically when students push/PR request YAML files.
+# ~30 seconds to results. No Geant4 needed.
+# ═══════════════════════════════════════════════════════════════
+
+name: "🔬 Highland Prediction"
+
+on:
+  pull_request:
+    paths:
+      - 'requests/**/*.yml'
+      - 'requests/**/*.yaml'
+  push:
+    branches: [main]
+    paths:
+      - 'requests/**/*.yml'
+      - 'requests/**/*.yaml'
+  workflow_dispatch:
+    inputs:
+      request_file:
+        description: 'Path to a request YAML file'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  # ─── Step 1: Find changed request files ───
+  list_requests:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix_json: ${{ steps.build.outputs.matrix_json }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect changed files
+        id: changed
+        if: github.event_name != 'workflow_dispatch'
+        uses: tj-actions/changed-files@v45
+        with:
+          files: |
+            requests/**/*.yml
+            requests/**/*.yaml
+
+      - name: Build matrix
+        id: build
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            FILES="${{ inputs.request_file }}"
+          else
+            FILES="${{ steps.changed.outputs.all_changed_files }}"
+          fi
+
+          python3 -c "
+          import json, os
+          raw = os.environ.get('FILES', '')
+          files = [f.strip() for f in raw.split() if f.strip()]
+          print('matrix_json=' + json.dumps(files))
+          " >> "$GITHUB_OUTPUT"
+        env:
+          FILES: ${{ github.event_name == 'workflow_dispatch' && inputs.request_file || steps.changed.outputs.all_changed_files }}
+
+  # ─── Step 2: Validate YAML against schema ───
+  validate:
+    runs-on: ubuntu-latest
+    needs: list_requests
+    if: needs.list_requests.outputs.matrix_json != '[]'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r analysis/requirements.txt
+      - name: Validate request files
+        run: |
+          python scripts/validate_requests.py ${{ join(fromJSON(needs.list_requests.outputs.matrix_json), ' ') }}
+
+  # ─── Step 3: Run Highland prediction (one job per request) ───
+  predict:
+    runs-on: ubuntu-latest
+    needs: [list_requests, validate]
+    if: needs.list_requests.outputs.matrix_json != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        request_file: ${{ fromJSON(needs.list_requests.outputs.matrix_json) }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r analysis/requirements.txt
+
+      - name: Run Highland Calculator
+        id: run
+        run: |
+          base=$(basename "${{ matrix.request_file }}")
+          stem=${base%.*}
+          outdir="results/${stem}"
+          mkdir -p "$outdir"
+          python analysis/highland_calculator.py "${{ matrix.request_file }}" --output-dir "$outdir"
+          echo "outdir=$outdir" >> "$GITHUB_OUTPUT"
+          echo "stem=$stem" >> "$GITHUB_OUTPUT"
+
+      - name: Append artifacts link
+        if: github.event_name == 'pull_request'
+        run: |
+          runUrl="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo "" >> "${{ steps.run.outputs.outdir }}/SUMMARY.md"
+          echo "📎 **Full-resolution plots**: [download from artifacts](${runUrl})" >> "${{ steps.run.outputs.outdir }}/SUMMARY.md"
+
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: highland-${{ steps.run.outputs.stem }}
+          path: ${{ steps.run.outputs.outdir }}
+          retention-days: 30
+
+      - name: Comment results on PR
+        if: github.event_name == 'pull_request'
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body-path: ${{ steps.run.outputs.outdir }}/SUMMARY.md
+
+  # ─── Step 4: Commit results to repo (main branch only) ───
+  commit_results:
+    runs-on: ubuntu-latest
+    needs: predict
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: _artifacts
+
+      - name: Merge results into repo
+        run: |
+          mkdir -p results
+          for dir in _artifacts/highland-*/; do
+            stem=$(basename "$dir" | sed 's/^highland-//')
+            mkdir -p "results/$stem"
+            cp -r "$dir"/* "results/$stem/" 2>/dev/null || true
+          done
+
+      - name: Commit & push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add results/
+          git diff --cached --quiet || git commit -m "🔬 Update Highland predictions [skip ci]"
+          git push

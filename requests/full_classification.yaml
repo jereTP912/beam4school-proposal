@@ -1,0 +1,54 @@
+author: "BeamScan Team — Córdoba, Argentina"
+description: "Full 12-material classification scan for proposal figures"
+
+beam:
+  particle: "e-"
+  momenta_GeV: [3.0, 6.0]
+  num_events: 10000
+
+materials:
+  # ─── Plastics ───
+  - name: "PE"
+    geant4_name: "G4_POLYETHYLENE"
+    thickness_mm: 10.0
+  - name: "PP"
+    geant4_name: "G4_POLYPROPYLENE"
+    thickness_mm: 10.0
+  - name: "PS"
+    geant4_name: "G4_POLYSTYRENE"
+    thickness_mm: 10.0
+  - name: "PMMA"
+    geant4_name: "G4_PLEXIGLASS"
+    thickness_mm: 10.0
+  - name: "Nylon"
+    geant4_name: "G4_NYLON-6-6"
+    thickness_mm: 10.0
+  - name: "PET"
+    geant4_name: "G4_MYLAR"
+    thickness_mm: 10.0
+  - name: "PVC"
+    geant4_name: "G4_POLYVINYL_CHLORIDE"
+    thickness_mm: 10.0
+  # ─── Heritage / Geological ───
+  - name: "Obsidian"
+    geant4_name: "Obsidian"
+    thickness_mm: 10.0
+  - name: "SiO2"
+    geant4_name: "G4_SILICON_DIOXIDE"
+    thickness_mm: 10.0
+  - name: "CaCO3"
+    geant4_name: "G4_CALCIUM_CARBONATE"
+    thickness_mm: 10.0
+  - name: "Al2O3"
+    geant4_name: "G4_ALUMINUM_OXIDE"
+    thickness_mm: 10.0
+  - name: "Fe2O3"
+    geant4_name: "G4_FERRIC_OXIDE"
+    thickness_mm: 10.0
+
+outputs:
+  highland_prediction: true
+  geant4_simulation: false
+  classification_plot: true
+  distribution_overlay: true
+  comparison_table: true

@@ -1,0 +1,72 @@
+# ═══════════════════════════════════════════════════════════════
+# BeamScan — Publish Atlas to GitHub Pages
+# ═══════════════════════════════════════════════════════════════
+# After the nightly or manual full scan, publish results as a
+# simple web page so the team can share a link to the latest plots.
+# ═══════════════════════════════════════════════════════════════
+
+name: "📖 Publish Atlas"
+
+on:
+  workflow_run:
+    workflows: ["🔬 Highland Prediction"]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Pages site
+        run: |
+          mkdir -p _site
+          
+          # Copy all result plots and summaries
+          if [ -d results ]; then
+            cp -r results/ _site/results/
+          fi
+          
+          # Generate index page
+          cat > _site/index.html << 'HTML'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <title>BeamScan Atlas — BL4S 2026</title>
+            <style>
+              body { font-family: -apple-system, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; }
+              h1 { color: #1A237E; }
+              img { max-width: 100%; border: 1px solid #ddd; border-radius: 4px; margin: 1em 0; }
+              .team { color: #666; font-style: italic; }
+            </style>
+          </head>
+          <body>
+            <h1>🔬 BeamScan Atlas</h1>
+            <p class="team">BL4S 2026 — Team from Córdoba, Argentina</p>
+            <p>A particle-beam fingerprint library for plastics and geological reference materials.</p>
+            <h2>Latest Classification Plot</h2>
+            <img src="results/full_classification/classification.png" alt="Classification plot">
+            <h2>Scattering Distributions</h2>
+            <img src="results/full_classification/distributions.png" alt="Distributions">
+            <h2>Full Results</h2>
+            <p><a href="results/full_classification/SUMMARY.md">View detailed summary</a></p>
+            <hr>
+            <p><a href="https://github.com/YOUR_ORG/bl4s-beamscan">View source on GitHub</a></p>
+          </body>
+          </html>
+          HTML
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - uses: actions/deploy-pages@v4

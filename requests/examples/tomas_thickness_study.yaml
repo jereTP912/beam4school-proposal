@@ -1,0 +1,39 @@
+# 🔬 Does target thickness matter for classification?
+#
+# The Highland formula says θ₀ ∝ √(x/X₀), so thicker
+# targets give bigger scattering. But does doubling thickness
+# actually help separate close materials like PS and PMMA?
+
+author: "Tomás (example)"
+description: "Thickness optimization: 5 vs 10 vs 20 mm"
+
+beam:
+  particle: "e-"
+  momenta_GeV: [3.0]
+  num_events: 10000
+
+materials:
+  # Same three materials at three thicknesses
+  - name: "PS_5mm"
+    geant4_name: "G4_POLYSTYRENE"
+    thickness_mm: 5.0
+  - name: "PS_10mm"
+    geant4_name: "G4_POLYSTYRENE"
+    thickness_mm: 10.0
+  - name: "PS_20mm"
+    geant4_name: "G4_POLYSTYRENE"
+    thickness_mm: 20.0
+  - name: "PMMA_5mm"
+    geant4_name: "G4_PLEXIGLASS"
+    thickness_mm: 5.0
+  - name: "PMMA_10mm"
+    geant4_name: "G4_PLEXIGLASS"
+    thickness_mm: 10.0
+  - name: "PMMA_20mm"
+    geant4_name: "G4_PLEXIGLASS"
+    thickness_mm: 20.0
+
+outputs:
+  highland_prediction: true
+  distribution_overlay: true
+  comparison_table: true

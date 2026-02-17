@@ -1,0 +1,30 @@
+# 🔬 Can we detect PVC contamination in a recycling stream?
+#
+# PVC is the #1 problem plastic in recycling — its chlorine
+# releases HCl acid during reprocessing. This study checks
+# how easily we can separate PVC from the common recyclables.
+
+author: "Valentina (example)"
+description: "PVC detection: how many events do we need?"
+
+beam:
+  particle: "e-"
+  momenta_GeV: [3.0]
+  num_events: 5000
+
+materials:
+  - name: "PE"
+    geant4_name: "G4_POLYETHYLENE"
+    thickness_mm: 10.0
+  - name: "PET"
+    geant4_name: "G4_MYLAR"
+    thickness_mm: 10.0
+  - name: "PVC"
+    geant4_name: "G4_POLYVINYL_CHLORIDE"
+    thickness_mm: 10.0
+
+outputs:
+  highland_prediction: true
+  classification_plot: true
+  distribution_overlay: true
+  comparison_table: true

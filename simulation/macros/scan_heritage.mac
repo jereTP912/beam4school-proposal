@@ -1,0 +1,37 @@
+# scan_heritage.mac — Run MCS measurements on heritage/geological targets
+# Usage: ./beamscan macros/scan_heritage.mac
+
+/run/initialize
+
+/gun/particle e-
+/gun/energy 3 GeV
+
+# === Obsidian (custom material) ===
+/beamscan/target/material Obsidian
+/beamscan/target/thickness 10 mm
+/analysis/setFileName beamscan_Obsidian_3GeV_10mm
+/run/beamOn 10000
+
+# === SiO2 (Quartz glass) ===
+/beamscan/target/material G4_SILICON_DIOXIDE
+/beamscan/target/thickness 10 mm
+/analysis/setFileName beamscan_SiO2_3GeV_10mm
+/run/beamOn 10000
+
+# === CaCO3 (Calcite / limestone) ===
+/beamscan/target/material G4_CALCIUM_CARBONATE
+/beamscan/target/thickness 10 mm
+/analysis/setFileName beamscan_CaCO3_3GeV_10mm
+/run/beamOn 10000
+
+# === Al2O3 (Alumina / ceramic) ===
+/beamscan/target/material G4_ALUMINUM_OXIDE
+/beamscan/target/thickness 10 mm
+/analysis/setFileName beamscan_Al2O3_3GeV_10mm
+/run/beamOn 10000
+
+# === Fe2O3 (Iron oxide pigment) ===
+/beamscan/target/material G4_FERRIC_OXIDE
+/beamscan/target/thickness 10 mm
+/analysis/setFileName beamscan_Fe2O3_3GeV_10mm
+/run/beamOn 10000

@@ -1,0 +1,136 @@
+# ═══════════════════════════════════════════════════════════════
+# BeamScan — Master Materials Registry
+# ═══════════════════════════════════════════════════════════════
+#
+# This is the CANONICAL list of all BeamScan target materials.
+# Students can contribute by adding new entries via Pull Request.
+#
+# Two ways to define a material:
+#   1. geant4_nist: use a standard Geant4/NIST name (preferred)
+#   2. composition: specify element mass fractions + density
+#
+# The nightly workflow scans ALL materials here at all momenta.
+# ═══════════════════════════════════════════════════════════════
+
+momenta_GeV: [3.0, 6.0]
+default_thickness_mm: [10]
+default_events: 10000
+
+materials:
+  # ─── PLASTICS (recycling QC) ───
+  - id: PE
+    label: Polyethylene
+    category: plastic
+    geant4_nist: G4_POLYETHYLENE
+    X0_cm: 47.9
+    thickness_mm: [5, 10, 20]
+    relevance: "Most common packaging plastic"
+
+  - id: PP
+    label: Polypropylene
+    category: plastic
+    geant4_nist: G4_POLYPROPYLENE
+    X0_cm: 47.4
+    thickness_mm: [10]
+    relevance: "Food containers, bottle caps"
+
+  - id: PS
+    label: Polystyrene
+    category: plastic
+    geant4_nist: G4_POLYSTYRENE
+    X0_cm: 42.5
+    thickness_mm: [10]
+    relevance: "Disposable cups, packaging foam"
+
+  - id: PMMA
+    label: Polymethyl methacrylate (Plexiglass)
+    category: plastic
+    geant4_nist: G4_PLEXIGLASS
+    X0_cm: 34.4
+    thickness_mm: [10]
+    relevance: "Transparent panels, lenses"
+
+  - id: Nylon
+    label: Nylon 6,6
+    category: plastic
+    geant4_nist: G4_NYLON-6-6
+    X0_cm: 36.7
+    thickness_mm: [10]
+    relevance: "Textiles, fishing nets"
+
+  - id: PET
+    label: Polyethylene terephthalate
+    category: plastic
+    geant4_nist: G4_MYLAR
+    X0_cm: 28.7
+    thickness_mm: [5, 10, 20]
+    relevance: "Beverage bottles — key recyclable"
+
+  - id: PVC
+    label: Polyvinyl chloride
+    category: plastic
+    geant4_nist: G4_POLYVINYL_CHLORIDE
+    X0_cm: 15.3
+    thickness_mm: [5, 10, 20]
+    relevance: "PROBLEM PLASTIC — chlorine contaminates recycling streams"
+
+  # ─── HERITAGE / GEOLOGICAL ───
+  - id: Obsidian
+    label: Obsidian (volcanic glass)
+    category: heritage
+    density_g_cm3: 2.35
+    X0_cm: 12.3
+    composition:
+      - element: Si
+        fraction: 0.33
+      - element: O
+        fraction: 0.54
+      - element: Al
+        fraction: 0.08
+      - element: Fe
+        fraction: 0.05
+    thickness_mm: [10]
+    relevance: "Pre-Columbian tools — Argentine archaeological trade routes"
+
+  - id: SiO2
+    label: Fused quartz
+    category: heritage
+    geant4_nist: G4_SILICON_DIOXIDE
+    X0_cm: 12.29
+    thickness_mm: [10]
+    relevance: "Pottery component, geological reference"
+
+  - id: CaCO3
+    label: Calcite / marble
+    category: heritage
+    geant4_nist: G4_CALCIUM_CARBONATE
+    X0_cm: 10.7
+    thickness_mm: [10]
+    relevance: "Marble sculpture, mortar, limestone"
+
+  - id: Al2O3
+    label: Alumina / corundum
+    category: heritage
+    geant4_nist: G4_ALUMINUM_OXIDE
+    X0_cm: 10.2
+    thickness_mm: [10]
+    relevance: "Ceramic reference, gemstones"
+
+  - id: Fe2O3
+    label: Iron oxide (red ochre / hematite)
+    category: heritage
+    geant4_nist: G4_FERRIC_OXIDE
+    X0_cm: 5.5
+    thickness_mm: [10]
+    relevance: "Cave painting pigment, pottery glaze"
+
+  # ─── SAFETY FALLBACKS (non-combustible low-Z alternatives) ───
+  # Use these if any polymer is not permitted at the assigned facility
+  - id: Graphite
+    label: Graphite (C)
+    category: fallback
+    geant4_nist: G4_GRAPHITE
+    X0_cm: 18.8
+    thickness_mm: [10]
+    relevance: "Non-combustible carbon reference — replaces plastics if needed"
+    optional: true

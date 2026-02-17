@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BeamScan student request",
+  "type": "object",
+  "required": ["author", "beam", "materials"],
+  "properties": {
+    "author": {"type": "string", "minLength": 1},
+    "description": {"type": "string"},
+    "beam": {
+      "type": "object",
+      "required": ["particle", "momenta_GeV", "num_events"],
+      "properties": {
+        "particle": {"type": "string"},
+        "momenta_GeV": {
+          "type": "array",
+          "items": {"type": "number", "exclusiveMinimum": 0},
+          "minItems": 1
+        },
+        "num_events": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": true
+    },
+    "materials": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "geant4_name", "thickness_mm"],
+        "properties": {
+          "name": {"type": "string", "minLength": 1},
+          "geant4_name": {"type": "string", "minLength": 1},
+          "thickness_mm": {"type": "number", "exclusiveMinimum": 0},
+          "category": {"type": "string"},
+          "x0_cm": {"type": "number", "exclusiveMinimum": 0},
+          "X0_cm": {"type": "number", "exclusiveMinimum": 0},
+          "rho": {"type": "number", "exclusiveMinimum": 0},
+          "rho_gcc": {"type": "number", "exclusiveMinimum": 0},
+          "density_gcm3": {"type": "number", "exclusiveMinimum": 0}
+        },
+        "additionalProperties": true
+      }
+    },
+    "outputs": {
+      "type": "object",
+      "properties": {
+        "highland_prediction": {"type": "boolean"},
+        "geant4_simulation": {"type": "boolean"},
+        "classification_plot": {"type": "boolean"},
+        "distribution_overlay": {"type": "boolean"},
+        "comparison_table": {"type": "boolean"}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

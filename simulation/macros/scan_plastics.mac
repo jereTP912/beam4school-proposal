@@ -1,0 +1,50 @@
+# scan_plastics.mac — Run MCS measurements on all plastic targets
+# Usage: ./beamscan macros/scan_plastics.mac
+
+/run/initialize
+
+# Beam: 3 GeV electrons
+/gun/particle e-
+/gun/energy 3 GeV
+
+# === Polyethylene (PE) ===
+/beamscan/target/material G4_POLYETHYLENE
+/beamscan/target/thickness 10 mm
+/analysis/setFileName beamscan_PE_3GeV_10mm
+/run/beamOn 10000
+
+# === Polypropylene (PP) ===
+/beamscan/target/material G4_POLYPROPYLENE
+/beamscan/target/thickness 10 mm
+/analysis/setFileName beamscan_PP_3GeV_10mm
+/run/beamOn 10000
+
+# === Polystyrene (PS) ===
+/beamscan/target/material G4_POLYSTYRENE
+/beamscan/target/thickness 10 mm
+/analysis/setFileName beamscan_PS_3GeV_10mm
+/run/beamOn 10000
+
+# === PMMA (Acrylic) ===
+/beamscan/target/material G4_PLEXIGLASS
+/beamscan/target/thickness 10 mm
+/analysis/setFileName beamscan_PMMA_3GeV_10mm
+/run/beamOn 10000
+
+# === PET (Mylar) ===
+/beamscan/target/material G4_MYLAR
+/beamscan/target/thickness 10 mm
+/analysis/setFileName beamscan_PET_3GeV_10mm
+/run/beamOn 10000
+
+# === PVC ===
+/beamscan/target/material G4_POLYVINYL_CHLORIDE
+/beamscan/target/thickness 10 mm
+/analysis/setFileName beamscan_PVC_3GeV_10mm
+/run/beamOn 10000
+
+# === Nylon ===
+/beamscan/target/material G4_NYLON-6-6
+/beamscan/target/thickness 10 mm
+/analysis/setFileName beamscan_Nylon_3GeV_10mm
+/run/beamOn 10000
