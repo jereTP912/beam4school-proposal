@@ -1,11 +1,3 @@
-# ═══════════════════════════════════════════════════════════════
-# BeamScan -- Geant4 Monte Carlo (Docker on GitHub-hosted runner)
-# ═══════════════════════════════════════════════════════════════
-# Uses JeffersonLab's pre-built Geant4 Docker image.
-# GitHub Actions overrides the container entrypoint, so we must
-# locate Geant4 ourselves and source the environment script.
-# ═══════════════════════════════════════════════════════════════
-
 name: "Geant4 Simulation"
 
 on:
@@ -33,55 +25,41 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Locate Geant4 and export environment
-        id: g4env
+      - name: Locate Geant4
         shell: bash
         run: |
           set -euo pipefail
-          echo "=== Searching for Geant4 ==="
 
-          # 1) Find geant4-config anywhere
-          G4CFG="$(command -v geant4-config 2>/dev/null || true)"
+          # Find geant4-config (it's under /cvmfs in this image)
+          G4CFG="$(find / -type f -name geant4-config 2>/dev/null | head -1)"
           if [[ -z "$G4CFG" ]]; then
-            G4CFG="$(find / -type f -name geant4-config 2>/dev/null | head -1 || true)"
-          fi
-
-          if [[ -n "$G4CFG" ]]; then
-            echo "Found geant4-config: $G4CFG"
-            echo "$(dirname "$G4CFG")" >> "$GITHUB_PATH"
-            # Source the env script next to it
-            G4SH="$(dirname "$G4CFG")/geant4.sh"
-            if [[ -f "$G4SH" ]]; then
-              source "$G4SH"
-              echo "Sourced $G4SH"
-            fi
-            G4CMAKE="$("$G4CFG" --cmakedir 2>/dev/null || true)"
-          fi
-
-          # 2) If geant4-config didn't give us cmake dir, find it
-          if [[ -z "${G4CMAKE:-}" ]]; then
-            echo "Searching for Geant4Config.cmake..."
-            G4CMAKE="$(dirname "$(find / -type f -name Geant4Config.cmake 2>/dev/null | head -1)" 2>/dev/null || true)"
-          fi
-
-          if [[ -z "${G4CMAKE:-}" ]]; then
-            echo "ERROR: Geant4Config.cmake not found anywhere in container."
-            echo "Debug info:"
-            find / -maxdepth 4 -name "geant4*" -type d 2>/dev/null || true
+            echo "ERROR: geant4-config not found"
             exit 1
           fi
+          echo "Found: $G4CFG"
 
+          G4BIN="$(dirname "$G4CFG")"
+          G4PREFIX="$("$G4CFG" --prefix)"
+          echo "Geant4 prefix: $G4PREFIX"
+          echo "Geant4 version: $("$G4CFG" --version)"
+
+          # Add to PATH for later steps
+          echo "$G4BIN" >> "$GITHUB_PATH"
+
+          # CMake dir: standard layout is <prefix>/lib/cmake/Geant4
+          # but verify it exists, otherwise search
+          G4CMAKE="$G4PREFIX/lib/cmake/Geant4"
+          if [[ ! -f "$G4CMAKE/Geant4Config.cmake" ]]; then
+            G4CMAKE="$(dirname "$(find "$G4PREFIX" -name Geant4Config.cmake 2>/dev/null | head -1)")"
+          fi
           echo "Geant4_DIR=$G4CMAKE"
           echo "Geant4_DIR=$G4CMAKE" >> "$GITHUB_ENV"
 
-          # 3) Find and source geant4.sh for data paths
-          G4SH="$(find / -type f -name geant4.sh -path "*/bin/*" 2>/dev/null | head -1 || true)"
-          if [[ -n "$G4SH" ]]; then
-            # Write a sourceable env file for later steps
+          # Source environment for data paths
+          G4SH="$G4BIN/geant4.sh"
+          if [[ -f "$G4SH" ]]; then
             source "$G4SH"
             echo "G4_ENV_SCRIPT=$G4SH" >> "$GITHUB_ENV"
-            echo "Sourced env from: $G4SH"
-            env | grep -i "^G4" | sort
           fi
 
           echo "=== Geant4 ready ==="
@@ -100,7 +78,7 @@ jobs:
       - name: Install Python deps
         shell: bash
         run: |
-          python3 -m pip --version 2>/dev/null || python3 -m ensurepip --upgrade
+          python3 -m ensurepip --upgrade 2>/dev/null || true
           python3 -m pip install --upgrade pip
           python3 -m pip install pyyaml numpy matplotlib scipy
 
