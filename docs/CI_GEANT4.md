@@ -1,35 +1,47 @@
-# Running Geant4 in GitHub Actions (advanced)
+# Geant4 CI -- How It Works
 
-The default student loop uses the **Highland predictor** (fast, no Geant4 needed).
+## Overview
 
-For real Geant4 runs you have three realistic options.
+The Geant4 simulation runs on **GitHub-hosted runners** using the
+[JeffersonLab Docker image](https://hub.docker.com/r/jeffersonlab/geant4)
+(`jeffersonlab/geant4:g4v11.3.2-fedora40`). This image includes:
 
-## Option A — Self-hosted runner in Córdoba (recommended)
+- Geant4 11.3.2 (pre-compiled)
+- All required datasets (G4NDL, G4EMLOW, etc.)
+- cmake, gcc, Python 3
 
-**Why:** fastest, most reliable, no 30–60 minute Geant4 build in CI.
+No self-hosted runner needed. No Geant4 installation needed.
 
-1. Pick a Linux machine (school PC / university workstation / small server).
-2. Install Geant4 (and datasets) once.
-3. Add the machine as a **self-hosted GitHub Actions runner**.
-4. Add runner labels: `self-hosted` and `geant4`.
+## How to trigger
 
-Then you can run the workflow:
-- **Actions → “Geant4 simulation (advanced, optional)” → Run workflow**
+1. Go to **Actions** > **Geant4 Simulation**
+2. Click **Run workflow**
+3. Enter the request file path (e.g. `requests/full_classification.yaml`)
+4. Optionally set events per config (default: 2000)
+5. Click **Run workflow**
 
-The workflow will:
-- build `simulation/` (BeamScan Geant4 app)
-- generate macros from the student request YAML
-- run Geant4 and upload CSV outputs as artifacts
+The job will:
+- Pull the Docker image (~7 GB, cached after first run)
+- Build BeamScan from source (~2 min)
+- Run all material/momentum combinations
+- Compare Geant4 results with Highland predictions
+- Upload everything as downloadable artifacts
 
-## Option B — Prebuilt Geant4 Docker image
+## Typical run times
 
-Maintain a Docker image that already contains Geant4 and datasets, then change the workflow:
-- set `runs-on: ubuntu-latest`
-- add `container: <your-image>`
+| Config | Events | Approx. time |
+|--------|--------|--------------|
+| 1 material, 1 momentum, 2000 events | 2000 | ~5 min |
+| 12 materials, 2 momenta, 2000 events | 48000 | ~20 min |
+| 12 materials, 2 momenta, 10000 events | 240000 | ~60 min |
 
-This is good if you don’t want a self-hosted runner, but you must keep the image updated.
+GitHub Actions free tier gives 2000 min/month. Use 2000 events for testing,
+10000+ for final validation.
 
-## Option C — Build Geant4 from source inside CI
+## Artifacts
 
-This works, but is heavy (long build + large datasets). Only recommended if you use caching and are comfortable maintaining CI infrastructure.
-
+After the run, download from the workflow run page:
+- `geant4_output/` -- raw CSV event data per material
+- `comparison/highland/` -- Highland predictions for comparison
+- `comparison/geant4_vs_highland/` -- overlay plots
+- `macros_auto/` -- generated Geant4 macros (reproducibility)

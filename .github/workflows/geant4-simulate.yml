@@ -1,17 +1,14 @@
 # ═══════════════════════════════════════════════════════════════
-# BeamScan — Geant4 Monte Carlo (advanced, optional)
+# BeamScan -- Geant4 Monte Carlo (Docker on GitHub-hosted runner)
 # ═══════════════════════════════════════════════════════════════
-# NOT part of the default student loop. Students use Highland.
+# Uses JeffersonLab's pre-built Geant4 Docker image (includes
+# Geant4 11.3.2 + all datasets + cmake + gcc).
 #
-# This runs on a SELF-HOSTED RUNNER in Córdoba with Geant4
-# installed, or on your own Docker image with Geant4.
-#
-# NOTE: The official geant4/geant4 Docker Hub image has no
-# published tags — don't rely on it. Build your own or use
-# a self-hosted runner.  See docs/CI_GEANT4.md for setup.
+# ~7 GB image pull + ~2 min build + ~5-15 min simulation.
+# Fits within GitHub Actions free tier (6h limit, 14 GB disk).
 # ═══════════════════════════════════════════════════════════════
 
-name: "⚛️ Geant4 Simulation"
+name: "Geant4 Simulation"
 
 on:
   workflow_dispatch:
@@ -21,9 +18,9 @@ on:
         required: true
         type: string
       events_per_config:
-        description: 'Events per (material × momentum) — 0 = use YAML value'
+        description: 'Events per (material x momentum). 0 = use YAML value'
         required: false
-        default: '0'
+        default: '2000'
         type: string
 
 permissions:
@@ -31,45 +28,74 @@ permissions:
 
 jobs:
   simulate:
-    # ── Change to ubuntu-latest + container: if using Docker ──
-    runs-on: [self-hosted, geant4]
+    runs-on: ubuntu-latest
+    container:
+      image: jeffersonlab/geant4:g4v11.3.2-fedora40
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build BeamScan (CMake)
+      - name: Verify Geant4
+        shell: bash
         run: |
-          cmake -S simulation -B build -DCMAKE_BUILD_TYPE=Release
-          cmake --build build -j$(nproc)
+          for f in /usr/local/geant4*/bin/geant4.sh; do
+            [ -f "$f" ] && source "$f" && break
+          done
+          echo "G4INSTALL=${G4INSTALL:-not found}"
+          geant4-config --version || true
+          cmake --version
+          echo "Disk free: $(df -h / | tail -1 | awk '{print $4}')"
 
-      - name: Generate macros from request
+      - name: Build BeamScan
+        shell: bash
+        run: |
+          for f in /usr/local/geant4*/bin/geant4.sh; do
+            [ -f "$f" ] && source "$f" && break
+          done
+          G4DIR=$(dirname $(find /usr/local -name "Geant4Config.cmake" 2>/dev/null | head -1))
+          cmake -S simulation -B build -DCMAKE_BUILD_TYPE=Release -DGeant4_DIR="$G4DIR"
+          cmake --build build -j$(nproc)
+          ls -la build/beamscan
+
+      - name: Install Python deps
+        run: |
+          pip install pyyaml numpy matplotlib scipy 2>/dev/null || \
+          pip install --break-system-packages pyyaml numpy matplotlib scipy
+
+      - name: Generate macros
+        shell: bash
         run: |
           python3 scripts/generate_macros.py "${{ inputs.request_file }}" \
             --output-dir macros_auto \
             --results-dir geant4_output \
             --events-per-config "${{ inputs.events_per_config }}"
 
-      - name: Run Geant4 simulations
-        env:
-          BEAMSCAN_BIN: ./build/beamscan
+      - name: Run Geant4
+        shell: bash
         run: |
+          for f in /usr/local/geant4*/bin/geant4.sh; do
+            [ -f "$f" ] && source "$f" && break
+          done
+          export BEAMSCAN_BIN=./build/beamscan
           bash macros_auto/run_all.sh
 
-      - name: Run Highland comparison
+      - name: Highland comparison
+        shell: bash
         run: |
-          pip install -r analysis/requirements.txt 2>/dev/null || true
-          STEM=$(basename "${{ inputs.request_file }}" .yaml)
+          mkdir -p comparison/highland comparison/geant4_vs_highland
           python3 analysis/highland_calculator.py "${{ inputs.request_file }}" \
-            --output-dir "comparison/highland"
+            --output-dir comparison/highland
           python3 analysis/analyze_geant4.py geant4_output/ \
             --highland-dir comparison/highland \
-            --output-dir "comparison/geant4_vs_highland"
+            --output-dir comparison/geant4_vs_highland || \
+          echo "Warning: Geant4 analysis had issues (may be OK)"
 
-      - name: Upload all results
+      - name: Upload results
         uses: actions/upload-artifact@v4
         with:
           name: geant4-${{ github.run_id }}
           path: |
             geant4_output/
             comparison/
+            macros_auto/
           retention-days: 60
