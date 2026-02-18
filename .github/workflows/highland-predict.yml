@@ -5,7 +5,7 @@
 # ~30 seconds to results. No Geant4 needed.
 # ═══════════════════════════════════════════════════════════════
 
-name: "🔬 Highland Prediction"
+name: "Highland Prediction"
 
 on:
   pull_request:
