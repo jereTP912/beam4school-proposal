@@ -20,7 +20,7 @@ When a GeV-scale charged particle traverses matter, it undergoes many small defl
 
 Using the Highland formula with PDG radiation lengths, we calculated expected scattering angles at 3 GeV/c through 10 mm targets:
 
-**Polyolefins** PE and PP (θ₀ ≈ 0.56 mrad): pure carbon–hydrogen baseline. **Oxygen-containing plastics** PS, PMMA, PET (θ₀ = 0.60–0.74 mrad): progressively heavier effective composition. **PVC** (θ₀ ≈ 1.04 mrad): the chlorine atom (Z = 17) dramatically increases scattering — detecting PVC contamination in recycling streams is our primary industrial application. **Geological materials** — quartz, calcite, alumina, iron oxide (θ₀ = 1.17–1.81 mrad): minerals built from silicon, calcium, aluminium, and iron scatter even more.
+**Polyolefins** PE and PP (θ₀ ≈ 0.56 mrad): pure carbon–hydrogen baseline. **Oxygen-containing plastics** PS, PMMA, PET (θ₀ = 0.60–0.74 mrad): progressively heavier effective composition. **PVC** (θ₀ ≈ 0.90 mrad): the chlorine atom (Z = 17) dramatically increases scattering — detecting PVC contamination in recycling streams is our primary industrial application. **Geological materials** — quartz, calcite, alumina, iron oxide (θ₀ = 1.17–2.38 mrad): minerals built from silicon, calcium, aluminium, and iron scatter even more.
 
 A natural gap separates the plastics cluster from the minerals cluster, reflecting a fundamental divide in chemistry: organic matter (C, H, O, N) versus inorganic matter (Si, Ca, Al, Fe). This gap is itself the scientific result — it proves MCS naturally sorts materials into compositional families.
 

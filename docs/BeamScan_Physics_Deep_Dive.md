@@ -74,17 +74,17 @@ PS       █████████████░░░░░░░░░░�
 Nylon    ██████████████░░░░░░░░░░░░░░░░░  0.646
 PMMA     ███████████████░░░░░░░░░░░░░░░░  0.669
 PET      █████████████████░░░░░░░░░░░░░░  0.738
-PVC      ███████████████████████░░░░░░░░  1.039  ← chlorine pushes it up
+PVC      ████████████████████░░░░░░░░░░░  0.901  ← chlorine pushes it up
 
-            ~~~ GAP: 1.04 → 1.17 mrad ~~~
+            ~~~ GAP: 0.90 → 1.17 mrad ~~~
 
 SiO₂     ██████████████████████████░░░░░  1.170  ← silicon/oxygen mineral
-CaCO₃    ███████████████████████████░░░░  1.261
-Al₂O₃    ████████████████████████████░░░  1.294
-Fe₂O₃    █████████████████████████████████ 1.808  ← iron dominates
+CaCO₃    ███████████████████████████████░  1.411
+Al₂O₃    ████████████████████████████████░ 1.575
+Fe₂O₃    █████████████████████████████████ 2.382  ← iron dominates
 ```
 
-The gap between PVC (1.04 mrad) and SiO₂ (1.17 mrad) is real and physically meaningful. It reflects a fundamental divide in chemistry:
+The gap between PVC (0.90 mrad) and SiO₂ (1.17 mrad) is real and physically meaningful. It reflects a fundamental divide in chemistry:
 
 **Organic matter** is built from **light elements** — carbon (Z=6), hydrogen (Z=1), oxygen (Z=8), nitrogen (Z=7). Even with chlorine (Z=17) in PVC, the *effective Z* of organic materials tops out around 8–10.
 
@@ -134,7 +134,7 @@ Better to spend that time on **systematics** (verifying Highland formula, studyi
 
 ### Reason 4: PVC already tells the bridge story
 
-PVC sits at θ₀ = 1.04 mrad — right at the edge of the gap. It's the material that *bridges* organic and inorganic because its chlorine gives it mineral-like scattering while its backbone is pure hydrocarbon. One material demonstrating this transition is more powerful than three materials crowding the gap.
+PVC sits at θ₀ = 0.90 mrad — right at the edge of the gap. It's the material that *bridges* organic and inorganic because its chlorine gives it mineral-like scattering while its backbone is pure hydrocarbon. One material demonstrating this transition is more powerful than three materials crowding the gap.
 
 ### Reason 5: Honesty about limitations is strength
 
@@ -168,7 +168,7 @@ If the MNP17 magnet *is* available (CERN only), it becomes a powerful extension:
 ## 5. Why This Experiment Is Practically Guaranteed to Work
 
 ### The signal is enormous
-The angular resolution of BL4S tracking detectors (DWCs) is approximately 0.014 mrad (from ~100 µm position resolution over a 50 cm lever arm). The smallest signal we measure (PE at 6 GeV) is 0.27 mrad — that's a **signal-to-resolution ratio of ~20:1**. The largest signal (Fe₂O₃ at 3 GeV) is 1.81 mrad — a ratio of **130:1**.
+The angular resolution of BL4S tracking detectors (DWCs) is approximately 0.014 mrad (from ~100 µm position resolution over a 50 cm lever arm). The smallest signal we measure (PE at 6 GeV) is 0.27 mrad — that's a **signal-to-resolution ratio of ~20:1**. The largest signal (Fe₂O₃ at 3 GeV) is 2.38 mrad — a ratio of **130:1**.
 
 We are not hunting for a tiny signal in noise. We are measuring a massive, clean effect.
 

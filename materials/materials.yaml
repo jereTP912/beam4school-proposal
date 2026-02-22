@@ -70,7 +70,7 @@ materials:
     label: Polyvinyl chloride
     category: plastic
     geant4_nist: G4_POLYVINYL_CHLORIDE
-    X0_cm: 15.3
+    X0_cm: 19.9
     thickness_mm: [5, 10, 20]
     relevance: "PROBLEM PLASTIC — chlorine contaminates recycling streams"
 
@@ -87,7 +87,7 @@ materials:
     label: Calcite / marble
     category: heritage
     geant4_nist: G4_CALCIUM_CARBONATE
-    X0_cm: 10.7
+    X0_cm: 8.7
     thickness_mm: [10]
     relevance: "Marble sculpture, mortar, limestone"
 
@@ -95,7 +95,7 @@ materials:
     label: Alumina / corundum
     category: heritage
     geant4_nist: G4_ALUMINUM_OXIDE
-    X0_cm: 10.2
+    X0_cm: 7.1
     thickness_mm: [10]
     relevance: "Ceramic reference, gemstones"
 
@@ -103,7 +103,7 @@ materials:
     label: Iron oxide (red ochre / hematite)
     category: heritage
     geant4_nist: G4_FERRIC_OXIDE
-    X0_cm: 5.5
+    X0_cm: 3.3
     thickness_mm: [10]
     relevance: "Cave painting pigment, pottery glaze"
 

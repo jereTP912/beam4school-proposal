@@ -146,11 +146,11 @@ When a fast particle (electron, pion, proton) passes through a material, it gets
 | Nylon | 36.7 | 0.646 | Plastic |
 | PMMA | 34.4 | 0.669 | Plastic |
 | PET | 28.7 | 0.738 | Plastic |
-| **PVC** | **15.3** | **1.039** | **Plastic** ⚠️ |
+| **PVC** | **19.9** | **0.901** | **Plastic** ⚠️ |
 | SiO₂ | 12.3 | 1.170 | Heritage |
-| CaCO₃ | 10.7 | 1.261 | Heritage |
-| Al₂O₃ | 10.2 | 1.294 | Heritage |
-| Fe₂O₃ | 5.5 | 1.808 | Heritage |
+| CaCO₃ | 8.7 | 1.411 | Heritage |
+| Al₂O₃ | 7.1 | 1.575 | Heritage |
+| Fe₂O₃ | 3.3 | 2.382 | Heritage |
 
 PVC stands out from the other plastics because of its chlorine (Z=17). Detecting PVC contamination in recycling streams is the primary industrial application.
 

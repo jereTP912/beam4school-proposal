@@ -97,11 +97,11 @@
       "formula": "(C₂H₃Cl)ₙ",
       "geant4_name": "G4_POLYVINYL_CHLORIDE",
       "category": "plastic",
-      "X0_cm": 15.3,
-      "density_gcc": 1.4,
+      "X0_cm": 19.9,
+      "density_gcc": 1.3,
       "Z_eff": 8.4,
-      "theta0_3GeV_10mm_mrad": 1.039,
-      "theta0_6GeV_10mm_mrad": 0.519,
+      "theta0_3GeV_10mm_mrad": 0.901,
+      "theta0_6GeV_10mm_mrad": 0.45,
       "application": "Pipes, flooring, cable insulation — PROBLEM PLASTIC for recycling (releases HCl)"
     },
     {
@@ -123,11 +123,11 @@
       "formula": "CaCO₃",
       "geant4_name": "G4_CALCIUM_CARBONATE",
       "category": "heritage",
-      "X0_cm": 10.7,
-      "density_gcc": 2.71,
+      "X0_cm": 8.7,
+      "density_gcc": 2.8,
       "Z_eff": 12.6,
-      "theta0_3GeV_10mm_mrad": 1.261,
-      "theta0_6GeV_10mm_mrad": 0.631,
+      "theta0_3GeV_10mm_mrad": 1.411,
+      "theta0_6GeV_10mm_mrad": 0.705,
       "application": "Marble sculpture, mortar/plaster, limestone buildings"
     },
     {
@@ -136,11 +136,11 @@
       "formula": "Al₂O₃",
       "geant4_name": "G4_ALUMINUM_OXIDE",
       "category": "heritage",
-      "X0_cm": 10.2,
-      "density_gcc": 3.95,
+      "X0_cm": 7.1,
+      "density_gcc": 3.97,
       "Z_eff": 11.2,
-      "theta0_3GeV_10mm_mrad": 1.294,
-      "theta0_6GeV_10mm_mrad": 0.647,
+      "theta0_3GeV_10mm_mrad": 1.575,
+      "theta0_6GeV_10mm_mrad": 0.787,
       "application": "Ceramic reference material, gemstones (ruby, sapphire)"
     },
     {
@@ -149,11 +149,11 @@
       "formula": "Fe₂O₃",
       "geant4_name": "G4_FERRIC_OXIDE",
       "category": "heritage",
-      "X0_cm": 5.5,
+      "X0_cm": 3.3,
       "density_gcc": 5.24,
       "Z_eff": 20.6,
-      "theta0_3GeV_10mm_mrad": 1.808,
-      "theta0_6GeV_10mm_mrad": 0.904,
+      "theta0_3GeV_10mm_mrad": 2.382,
+      "theta0_6GeV_10mm_mrad": 1.191,
       "application": "Red ochre pigment (cave paintings), pottery glaze, geological reference"
     }
   ]

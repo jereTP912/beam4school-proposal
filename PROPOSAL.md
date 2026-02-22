@@ -47,12 +47,12 @@ All predictions are for **10 mm targets at 3 GeV/c**:
 | Nylon | 36.7 | 0.646 | Plastic | Textiles, fishing nets |
 | PMMA | 34.4 | 0.669 | Plastic | Plexiglass, lenses |
 | PET | 28.7 | 0.738 | Plastic | Beverage bottles |
-| **PVC** | **15.3** | **1.039** | **Plastic** | ⚠️ **Problem plastic — contaminates recycling** |
+| **PVC** | **19.9** | **0.901** | **Plastic** | ⚠️ **Problem plastic — contaminates recycling** |
 | | | *— gap —* | | *Organic ↔ inorganic divide* |
 | SiO₂ | 12.3 | 1.170 | Heritage | Quartz — Comechingón morteros |
-| CaCO₃ | 10.7 | 1.261 | Heritage | Marble, mortar, limestone |
-| Al₂O₃ | 10.2 | 1.294 | Heritage | Ceramics, gemstones |
-| Fe₂O₃ | 5.5 | 1.808 | Heritage | Red ochre pigment |
+| CaCO₃ | 8.7 | 1.411 | Heritage | Marble, mortar, limestone |
+| Al₂O₃ | 7.1 | 1.575 | Heritage | Ceramics, gemstones |
+| Fe₂O₃ | 3.3 | 2.382 | Heritage | Red ochre pigment |
 
 **PVC jumps out** because chlorine (Z = 17) is much heavier than C/H/O/N. Detecting PVC contamination in recycling streams is our **hero result**.
 

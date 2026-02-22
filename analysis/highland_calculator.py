@@ -52,12 +52,12 @@ MATERIALS_DB = {
     "G4_PLEXIGLASS":          {"name": "PMMA",     "X0_cm": 34.4,  "rho": 1.18, "category": "plastic"},
     "G4_NYLON-6-6":           {"name": "Nylon",    "X0_cm": 36.7,  "rho": 1.14, "category": "plastic"},
     "G4_MYLAR":               {"name": "PET",      "X0_cm": 28.7,  "rho": 1.38, "category": "plastic"},
-    "G4_POLYVINYL_CHLORIDE":  {"name": "PVC",      "X0_cm": 15.3,  "rho": 1.40, "category": "plastic"},
+    "G4_POLYVINYL_CHLORIDE":  {"name": "PVC",      "X0_cm": 19.9,  "rho": 1.30, "category": "plastic"},
     # Heritage / Geological
     "G4_SILICON_DIOXIDE":     {"name": "SiO₂",    "X0_cm": 12.29, "rho": 2.20, "category": "heritage"},
-    "G4_CALCIUM_CARBONATE":   {"name": "CaCO₃",   "X0_cm": 10.7,  "rho": 2.71, "category": "heritage"},
-    "G4_ALUMINUM_OXIDE":      {"name": "Al₂O₃",   "X0_cm": 10.2,  "rho": 3.95, "category": "heritage"},
-    "G4_FERRIC_OXIDE":        {"name": "Fe₂O₃",   "X0_cm": 5.5,   "rho": 5.24, "category": "heritage"},
+    "G4_CALCIUM_CARBONATE":   {"name": "CaCO₃",   "X0_cm": 8.7,   "rho": 2.80, "category": "heritage"},
+    "G4_ALUMINUM_OXIDE":      {"name": "Al₂O₃",   "X0_cm": 7.1,   "rho": 3.97, "category": "heritage"},
+    "G4_FERRIC_OXIDE":        {"name": "Fe₂O₃",   "X0_cm": 3.3,   "rho": 5.24, "category": "heritage"},
     # Metals
     "G4_Al":                  {"name": "Al",       "X0_cm": 8.90,  "rho": 2.70, "category": "metal"},
     "G4_Fe":                  {"name": "Fe",       "X0_cm": 1.757, "rho": 7.87, "category": "metal"},
