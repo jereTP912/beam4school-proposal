@@ -68,7 +68,7 @@ void DetectorConstruction::DefineMaterials()
     // Custom: Granite (approximate)
     // ~72% SiO2, ~14% Al2O3, ~4% K2O, ~3% Na2O, ~3% Fe2O3, ~2% CaO, ~2% MgO
     auto Mg = nist->FindOrBuildElement("Mg");
-    auto granite = new G4Material("Granite", 2.70*g/cm3, 7);
+    auto granite = new G4Material("Granite", 2.70*g/cm3, 8);
     granite->AddElement(Si, 0.3363);
     granite->AddElement(O,  0.4810);
     granite->AddElement(Al, 0.0741);
@@ -76,6 +76,7 @@ void DetectorConstruction::DefineMaterials()
     granite->AddElement(Na, 0.0223);
     granite->AddElement(Fe, 0.0210);
     granite->AddElement(Ca, 0.0143);
+    granite->AddElement(Mg, 0.0178);
 
     // Detector materials
     nist->FindOrBuildMaterial("G4_Si");                   // Silicon trackers

@@ -17,7 +17,7 @@
 FROM python:3.11-slim
 
 # ── Option B: Full Geant4 (uncomment and comment Option A) ──
-# FROM geant4/geant4:11.2.2
+# FROM geant4/geant4:11.3.2
 # RUN apt-get update && apt-get install -y python3 python3-pip
 
 WORKDIR /work

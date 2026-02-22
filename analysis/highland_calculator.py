@@ -18,7 +18,7 @@ import json
 import os
 import sys
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone
 
 # Try importing optional dependencies
 try:
@@ -200,7 +200,7 @@ def generate_table_csv(results, outdir):
 def generate_markdown_summary(req, results, outdir, plots_generated):
     """Write a Markdown summary suitable for PR comments."""
     filepath = os.path.join(outdir, "SUMMARY.md")
-    now = datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
     with open(filepath, 'w') as f:
         f.write(f"# 🔬 BeamScan Simulation Results\n\n")
