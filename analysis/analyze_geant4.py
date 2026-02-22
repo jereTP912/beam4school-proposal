@@ -34,23 +34,62 @@ def gaussian(x, A, mu, sigma):
 
 
 def analyze_event_file(filepath):
-    """Read Geant4 CSV output and extract scattering distribution."""
-    theta_x = []
+    """Read Geant4 CSV output and extract scattering distribution.
+
+    Geant4's CSV writer uses a non-standard header format:
+        #class tools::wcsv::ntuple
+        #title beamscan
+        #separator 44
+        #column double thetaX_mrad
+        ...
+        <data rows>
+
+    We parse the #column lines to get field names, then read data rows.
+    Also handles standard CSV (with a normal header row) as fallback.
+    """
+    columns = []
+    data_rows = []
+
     with open(filepath) as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            # Column-name compatibility:
-            # - our analysis expects theta_x_mrad
-            # - Geant4 ntuple may use thetaX_mrad depending on how it was written
-            if 'theta_x_mrad' in row:
-                theta_x.append(float(row['theta_x_mrad']))
-            elif 'thetaX_mrad' in row:
-                theta_x.append(float(row['thetaX_mrad']))
-            else:
-                raise KeyError(
-                    "Missing scattering column: expected 'theta_x_mrad' or 'thetaX_mrad'. "
-                    f"Available columns: {list(row.keys())}"
-                )
+        lines = f.readlines()
+
+    # Detect Geant4 wcsv format vs standard CSV
+    if lines and lines[0].startswith('#class tools::wcsv::ntuple'):
+        # Geant4 wcsv format: extract column names and separator
+        separator = ','  # default
+        for line in lines:
+            line = line.strip()
+            if line.startswith('#separator '):
+                separator = chr(int(line.split()[-1]))
+            elif line.startswith('#column '):
+                # e.g. "#column double thetaX_mrad"
+                columns.append(line.split()[-1])
+            elif not line.startswith('#') and line:
+                vals = line.split(separator)
+                if len(vals) == len(columns):
+                    data_rows.append(dict(zip(columns, vals)))
+    else:
+        # Standard CSV fallback
+        import io
+        reader = csv.DictReader(io.StringIO(''.join(lines)))
+        columns = reader.fieldnames or []
+        data_rows = list(reader)
+
+    if not data_rows:
+        raise ValueError(f"No data rows found in {filepath}")
+
+    # Extract scattering angle
+    theta_x = []
+    for row in data_rows:
+        if 'thetaX_mrad' in row:
+            theta_x.append(float(row['thetaX_mrad']))
+        elif 'theta_x_mrad' in row:
+            theta_x.append(float(row['theta_x_mrad']))
+        else:
+            raise KeyError(
+                "Missing scattering column: expected 'theta_x_mrad' or 'thetaX_mrad'. "
+                f"Available columns: {list(row.keys())}"
+            )
 
     theta_x = np.array(theta_x)
 

@@ -23,9 +23,12 @@ int main(int argc, char** argv)
         ui = new G4UIExecutive(argc, argv);
     }
 
-    // Construct the run manager (auto-detects MT capability)
+    // Construct the run manager in serial mode.
+    // Serial produces a single clean CSV per simulation, avoiding the
+    // per-thread file splitting of MT mode (which complicates analysis).
+    // For our event counts (2000–10000) serial is fast enough.
     auto runManager = G4RunManagerFactory::CreateRunManager(
-        G4RunManagerType::Default);
+        G4RunManagerType::Serial);
 
     // Physics list: FTFP_BERT with high-precision EM (option4 for accurate MCS)
     auto physicsList = new FTFP_BERT;
