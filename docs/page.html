@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Esta es una nueva web!!!!!</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #1a1a2e; line-height: 1.7; background: #fafafa; }
+    .hero { background: linear-gradient(135deg, #1A237E 0%, #283593 50%, #1565C0 100%); color: white; padding: 3em 1.5em 2.5em; text-align: center; }
+    .hero h1 { font-size: 2.6em; margin-bottom: 0.2em; letter-spacing: -0.02em; }
+    .hero .subtitle { font-size: 1.15em; opacity: 0.9; font-weight: 300; }
+    .hero .badge { display: inline-block; background: rgba(255,255,255,0.15); padding: 0.3em 1em; border-radius: 20px; margin-top: 1em; font-size: 0.85em; }
+    .container { max-width: 960px; margin: 0 auto; padding: 2em 1.5em; }
+    h2 { color: #1A237E; font-size: 1.5em; margin: 2em 0 0.7em; padding-bottom: 0.3em; border-bottom: 2px solid #E8EAF6; }
+    p { margin-bottom: 1em; }
+    img { max-width: 100%; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); margin: 1em 0; }
+    .caption { text-align: center; color: #666; font-size: 0.88em; font-style: italic; margin-top: -0.5em; margin-bottom: 2em; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5em; margin: 1em 0; }
+    .grid img { margin: 0; }
+    @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } .hero h1 { font-size: 1.8em; } }
+    .links { display: flex; flex-wrap: wrap; gap: 0.8em; margin: 1.5em 0; }
+    .links a { display: inline-flex; align-items: center; gap: 0.4em; padding: 0.6em 1.2em; background: #E8EAF6; color: #1A237E; border-radius: 6px; text-decoration: none; font-weight: 500; font-size: 0.9em; transition: background 0.2s; }
+    .links a:hover { background: #C5CAE9; }
+    .footer { text-align: center; padding: 2em; color: #999; font-size: 0.85em; border-top: 1px solid #eee; margin-top: 3em; }
+    .flag { font-size: 1.3em; }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div><span class="flag">🇦🇷</span> <span class="flag">🔬</span></div>
+  <h1>BeamScan Atlas</h1>
+  <p class="subtitle">A Particle-Beam Material Classifier — From Recycling to Heritage Science</p>
+  <span class="badge">Los Topos Cósmicos · BL4S 2026 · Santa Rosa de Calamuchita, Córdoba, Argentina</span>
+</div>
+
+<div class="container">
+
+  <h2>The BeamScan Atlas</h2>
+  <p>Each material is a point. X-axis: scattering angle at 3 GeV/c. Y-axis: scattering angle at 6 GeV/c. Plastics cluster bottom-left, minerals top-right, PVC bridges the gap. <strong>No magnet required.</strong></p>
+  <img src="figures/classification_plot_final.png" alt="BeamScan Atlas — 2D classification plot">
+  <p class="caption">Figure 1 — Predicted BeamScan Atlas (Highland formula, PDG X₀ values). Works at CERN T9, DESY, or ELSA.</p>
+
+  <h2>Experimental Setup</h2>
+  <p>Beam → Scintillator → Trackers → <strong>TARGET</strong> → Trackers → Scintillator. Standard BL4S equipment at any facility.</p>
+  <img src="figures/setup_schematic.png" alt="Facility-agnostic BeamScan layout">
+  <p class="caption">Figure 2 — Tracker–target–tracker geometry. Magnet and calorimeter are optional extensions.</p>
+
+  <h2>Physics</h2>
+  <div class="grid">
+    <div>
+      <img src="figures/physics_explanation_gap.png" alt="Why the gap exists">
+      <p class="caption">Why the gap between plastics and minerals is real</p>
+    </div>
+    <div>
+      <img src="figures/discrimination_matrix.png" alt="Events needed for 3σ separation">
+      <p class="caption">Events needed for 3σ separation between each pair</p>
+    </div>
+  </div>
+
+  <h2>Repository</h2>
+  <p>Students contribute by editing YAML files — no C++ or Geant4 needed. GitHub Actions runs Highland predictions in ~30 seconds and posts results as PR comments.</p>
+  <div class="links">
+    <a href="https://github.com/los-topos-cosmicos/beam4school-proposal">📂 Source code</a>
+    <a href="https://github.com/los-topos-cosmicos/beam4school-proposal/blob/main/PROPOSAL.md">📄 Full proposal</a>
+    <a href="https://github.com/los-topos-cosmicos/beam4school-proposal/blob/main/CONTRIBUTING.md">🤝 How to contribute</a>
+    <a href="https://github.com/los-topos-cosmicos/beam4school-proposal/blob/main/docs/guides/STUDENT_GUIDE.md">🇦🇷 Student guide (ES/EN)</a>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>Los Topos Cósmicos · Instituto San Francisco de Asís, Santa Rosa de Calamuchita, Córdoba 🇦🇷</p>
+  <p>Built for <a href="https://beamlineforschools.cern">CERN Beamline for Schools 2026</a> · ¡La física fundamental es para todos!</p>
+</div>
+
+</body>
+</html>
