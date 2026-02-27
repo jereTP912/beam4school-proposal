@@ -94,6 +94,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -110,12 +112,39 @@ jobs:
           echo "outdir=$outdir" >> "$GITHUB_OUTPUT"
           echo "stem=$stem" >> "$GITHUB_OUTPUT"
 
-      - name: Append artifacts link
+      - name: Push results to PR branch
         if: github.event_name == 'pull_request'
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add "${{ steps.run.outputs.outdir }}/"
+          git diff --cached --quiet || {
+            git commit -m "Highland results: ${{ steps.run.outputs.stem }} [skip ci]"
+            git push
+          }
+
+      - name: Prepare PR comment with inline images
+        if: github.event_name == 'pull_request'
+        run: |
+          outdir="${{ steps.run.outputs.outdir }}"
+          branch="${{ github.event.pull_request.head.ref }}"
+          repo="${{ github.repository }}"
+          raw="https://raw.githubusercontent.com/${repo}/${branch}"
+
+          # Rewrite image paths to raw.githubusercontent.com URLs
+          sed -i "s|!\[\(.*\)\](\(.*\.png\))|![\1](${raw}/${outdir}/\2)|g" "${outdir}/SUMMARY.md"
+
+          # Append artifacts link
+          runUrl="${{ github.server_url }}/${repo}/actions/runs/${{ github.run_id }}"
+          echo "" >> "${outdir}/SUMMARY.md"
+          echo "**Full-resolution plots**: [download from artifacts](${runUrl})" >> "${outdir}/SUMMARY.md"
+
+      - name: Append artifacts link (push to main)
+        if: github.event_name != 'pull_request'
         run: |
           runUrl="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           echo "" >> "${{ steps.run.outputs.outdir }}/SUMMARY.md"
-          echo "📎 **Full-resolution plots**: [download from artifacts](${runUrl})" >> "${{ steps.run.outputs.outdir }}/SUMMARY.md"
+          echo "**Full-resolution plots**: [download from artifacts](${runUrl})" >> "${{ steps.run.outputs.outdir }}/SUMMARY.md"
 
       - name: Upload results
         uses: actions/upload-artifact@v4
@@ -157,5 +186,5 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
           git add results/
-          git diff --cached --quiet || git commit -m "🔬 Update Highland predictions [skip ci]"
+          git diff --cached --quiet || git commit -m "Update Highland predictions [skip ci]"
           git push
