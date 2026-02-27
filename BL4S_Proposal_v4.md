@@ -2,7 +2,7 @@
 
 ## 1. Motivation to Participate (~100 words)
 
-We are students and teachers from the Instituto San Francisco de Asís in Santa Rosa de Calamuchita, Córdoba, Argentina. On the banks of the Río Santa Rosa, two materials defy identification without destroying them: Comechingón morteros carved in rock two thousand years ago, and mixed plastic waste arriving at local recycling cooperatives. The first is untouchable archaeological heritage. The second determines whether recycling is viable. Both pose the same challenge: compositional characterisation without destroying the sample. We want to demonstrate that particle physics can solve both problems with the same non-destructive technique. Participating in BL4S would let us validate this method with a real beam and bring the results home to our communities.
+We are students and teachers from Instituto San Francisco de Asís in Santa Rosa de Calamuchita, Córdoba, Argentina. Two thousand years ago, the Comechingón people carved and shaped the rock of our region — and the artefacts preserved in our local museum still cannot be studied without risking damage. Today, mixed plastic waste arrives at recycling facilities where a single piece of PVC, invisible to the naked eye, can contaminate and ruin the entire batch. Two problems, two thousand years apart, the same challenge: characterising a material without destroying it. Particle physics offers one answer for both: multiple Coulomb scattering reveals atomic composition through deflection angles alone. Participating in BL4S means we can finally prove it works.
 
 ---
 
