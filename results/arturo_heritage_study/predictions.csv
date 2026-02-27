@@ -1,0 +1,9 @@
+material,geant4_name,category,X0_cm,rho_gcc,thickness_mm,p_GeV,theta0_mrad,dE_MeV
+Quartz,G4_SILICON_DIOXIDE,heritage,12.29,2.2,10.0,4.0,0.8774,4.40
+Quartz,G4_SILICON_DIOXIDE,heritage,12.29,2.2,10.0,5.0,0.7019,4.40
+Calcite,G4_CALCIUM_CARBONATE,heritage,8.7,2.8,10.0,4.0,1.0579,5.60
+Calcite,G4_CALCIUM_CARBONATE,heritage,8.7,2.8,10.0,5.0,0.8464,5.60
+Alumina,G4_ALUMINUM_OXIDE,heritage,7.1,3.97,10.0,4.0,1.1810,7.94
+Alumina,G4_ALUMINUM_OXIDE,heritage,7.1,3.97,10.0,5.0,0.9448,7.94
+Iron_pigment,G4_FERRIC_OXIDE,heritage,3.3,5.24,10.0,4.0,1.7867,10.48
+Iron_pigment,G4_FERRIC_OXIDE,heritage,3.3,5.24,10.0,5.0,1.4294,10.48
