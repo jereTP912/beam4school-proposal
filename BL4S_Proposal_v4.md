@@ -29,7 +29,8 @@ The gap between both families is itself the scientific result — it proves MCS 
 
 Our core measurement requires only four Delay Wire Chambers (DWCs) and a target holder — standard equipment at all BL4S facilities:
 Beam (1–6 GeV/c) → DWC₁, DWC₂ → TARGET → DWC₃, DWC₄ → Pb-glass calorimeter (optional).
-Two trackers upstream measure the incoming particle direction. Two downstream measure the direction after the target. Subtracting the beam's natural divergence — measured in dedicated no-target runs — we extract the scattering signal from the material alone. The layout works with Delay Wire Chambers at CERN, beam telescopes at DESY, and the available tracking detectors at ELSA.
+Two trackers upstream measure the incoming particle direction. Two downstream measure the direction after the target.
+Subtracting the beam's natural divergence — measured in dedicated no-target runs — we extract the scattering signal from the material alone. The layout works with Delay Wire Chambers at CERN, beam telescopes at DESY, and the available tracking detectors at ELSA.
 
 ### Targets and Facility Considerations
 
