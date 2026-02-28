@@ -1,0 +1,59 @@
+# ═══════════════════════════════════════════════════════════════
+# BeamScan — Auto-build PDFs from Markdown sources
+# ═══════════════════════════════════════════════════════════════
+# Triggers when proposal or slide Markdown files change.
+# Builds PDFs via pandoc (proposal) and Marp (slides),
+# then commits them to docs/pdf/.
+# ═══════════════════════════════════════════════════════════════
+
+name: "Build PDFs"
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'BL4S_Proposal_v4.md'
+      - 'docs/slides/BeamScan-Overview.marp.md'
+      - 'docs/slides/BeamScan-TechDeep.marp.md'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-pdfs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pandoc + LaTeX
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc texlive-xetex texlive-fonts-recommended texlive-latex-recommended
+
+      - name: Install Marp CLI
+        run: npm install -g @marp-team/marp-cli
+
+      - name: Build proposal PDF
+        run: |
+          mkdir -p docs/pdf
+          pandoc BL4S_Proposal_v4.md -o docs/pdf/BL4S_2026_BeamScan_v4.pdf \
+            --pdf-engine=xelatex \
+            -V geometry:margin=2.5cm \
+            -V fontsize=11pt \
+            -V colorlinks=true \
+            -V linkcolor=blue \
+            -V urlcolor=blue
+
+      - name: Build slide PDFs
+        run: |
+          npx @marp-team/marp-cli docs/slides/BeamScan-Overview.marp.md --pdf --allow-local-files -o docs/pdf/BeamScan-Overview.pdf
+          npx @marp-team/marp-cli docs/slides/BeamScan-TechDeep.marp.md --pdf --allow-local-files -o docs/pdf/BeamScan-TechDeep.pdf
+
+      - name: Commit PDFs
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add docs/pdf/
+          git diff --cached --quiet || git commit -m "📄 Rebuild PDFs [skip ci]"
+          git push
